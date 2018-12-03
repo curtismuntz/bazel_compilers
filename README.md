@@ -20,8 +20,16 @@ load("@murtis_bazel_compilers//compilers:dependencies.bzl", "cross_compiler_depe
 cross_compiler_dependencies()
 ```
 
+In your `.bazelrc` file:
+```
+build:rpi --crosstool_top=//compilers/arm_compiler:toolchain
+build:rpi --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:rpi --cpu=armeabi-v7a --compiler=gcc
+build:rpi --spawn_strategy=standalone
+```
 
-Build with `bazel build --spawn_strategy=standalone --crosstool_top=@murtis_bazel_compilers//compilers/arm_compiler:toolchain --cpu=armeabi-v7a //example`
+
+Build with `bazel build --spawn_strategy=standalone --config=rpi //example`
 
 # Known issues:
 
