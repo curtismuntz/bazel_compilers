@@ -4,12 +4,9 @@ This repo hosts the bazel compiler defintions for my many cpp projects.
 
 # usage
 
-In your `workspace` file:
+In your `WORKSPACE` file:
 
 ```
-###############################
-# Cross compiler
-###############################
 http_archive(
     name = 'murtis_bazel_compilers',
     urls = [
@@ -18,9 +15,9 @@ http_archive(
     strip_prefix = 'bazel_compilers-master',
 )
 
-load("@murtis_bazel_compilers//compilers:dependencies.bzl", "linaro_5_3_1_arm_linux_gnueabihf_compiler_dependencies")
+load("@murtis_bazel_compilers//compilers:dependencies.bzl", "cross_compiler_dependencies")
 
-linaro_5_3_1_arm_linux_gnueabihf_compiler_dependencies()
+cross_compiler_dependencies()
 ```
 
 
