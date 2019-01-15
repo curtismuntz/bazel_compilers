@@ -5,11 +5,7 @@
 #
 # This file group should include
 #   * all cc_toolchain targets supported
-#   * all file groups that said cc_toolchain might refer to,
-# including the default_grte_top setting in the CROSSTOOL
-# protobuf.
-# load("@org_linaro_components_toolchain_gcc_5_3_1", "compiler_components")
-
+#   * all file groups that said cc_toolchain might refer to
 filegroup(
     name = "toolchain_fg",
     srcs = [
@@ -32,9 +28,12 @@ cc_toolchain_suite(
     name = "toolchain",
     # target_cpu | compiler
     toolchains = {
+        "armeabi-v7a": "cc-compiler-armeabi-v7a",
+        "k8": "cc-compiler-k8",
         "armeabi-v7a|gcc": "cc-compiler-armeabi-v7a",
         "k8|compiler": "cc-compiler-k8",
     },
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -88,7 +87,7 @@ cc_toolchain(
     name = "cc-compiler-k8",
     all_files = ":empty",
     compiler_files = ":empty",
-    cpu = "local",
+    cpu = "k8",
     dwp_files = ":empty",
     dynamic_runtime_libs = [":empty"],
     linker_files = ":empty",

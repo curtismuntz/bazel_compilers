@@ -21,7 +21,10 @@ cross_compiler_dependencies()
 ```
 
 In your `.bazelrc` file:
+
 ```
+build --compiler=compiler
+
 build:rpi --crosstool_top=//compilers/arm_compiler:toolchain
 build:rpi --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:rpi --cpu=armeabi-v7a --compiler=gcc
@@ -29,8 +32,6 @@ build:rpi --spawn_strategy=standalone
 ```
 
 
-Build with `bazel build --spawn_strategy=standalone --config=rpi //example`
+Build with:
 
-# Known issues:
-
-* armeabi-v7a does not fully link without adding `--spawn_strategy=standalone` to bazel build options.
+`bazel build --config=rpi //example` or `bazel build //example`
