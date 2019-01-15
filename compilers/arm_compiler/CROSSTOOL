@@ -1,27 +1,6 @@
 major_version: "local"
 minor_version: ""
 
-#####################
-# ARMeabi-v7a aliases
-#####################
-default_toolchain {
-  cpu: "armeabi-v7a|gcc"
-  toolchain_identifier: "clang_linux_armhf"
-}
-
-default_toolchain {
-  cpu: "rpi"
-  toolchain_identifier: "clang_linux_armhf"
-}
-
-########################
-# Local compiler aliases
-########################
-default_toolchain {
-  cpu: "k8"
-  toolchain_identifier: "local"
-}
-
 toolchain {
   abi_version: "gcc"
   abi_libc_version: "glibc_2.19"

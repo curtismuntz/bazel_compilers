@@ -36,7 +36,6 @@ cc_toolchain_suite(
     visibility = ["//visibility:public"],
 )
 
-
 filegroup(
     name = "linaro_linux_all_files",
     srcs = [
