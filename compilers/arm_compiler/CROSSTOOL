@@ -1,6 +1,5 @@
 major_version: "local"
 minor_version: ""
-default_target_cpu: "same_as_host"
 
 #####################
 # ARMeabi-v7a aliases
@@ -166,6 +165,7 @@ toolchain {
   }
 }
 
+
 toolchain {
   toolchain_identifier: "local"
   abi_libc_version: "local"
@@ -177,38 +177,27 @@ toolchain {
   compiler_flag: "-fstack-protector"
   compiler_flag: "-Wall"
   compiler_flag: "-Wl,-z,-relro,-z,now"
-  compiler_flag: "-B/usr/bin"
-  compiler_flag: "-B/usr/bin"
   compiler_flag: "-Wunused-but-set-parameter"
   compiler_flag: "-Wno-free-nonheap-object"
   compiler_flag: "-fno-omit-frame-pointer"
-  # TODO(bazel-team): In theory, the path here ought to exactly match the path
-  # used by gcc. That works because bazel currently doesn't track files at
-  # absolute locations and has no remote execution, yet. However, this will need
-  # to be fixed, maybe with auto-detection?
-  cxx_builtin_include_directory: "/usr/lib/gcc/"
+  cxx_builtin_include_directory: "/usr/include/c++/4.8"
+  cxx_builtin_include_directory: "/usr/include/x86_64-linux-gnu/c++/4.8"
+  cxx_builtin_include_directory: "/usr/include/c++/4.8/backward"
+  cxx_builtin_include_directory: "/usr/lib/gcc/x86_64-linux-gnu/4.8/include"
   cxx_builtin_include_directory: "/usr/local/include"
+  cxx_builtin_include_directory: "/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed"
+  cxx_builtin_include_directory: "/usr/include/x86_64-linux-gnu"
   cxx_builtin_include_directory: "/usr/include"
-  # cxx_builtin_include_directory: "/usr/include/sys"
-  # cxx_builtin_include_directory: "/usr/include/c++/5.4.0"
-  # cxx_builtin_include_directory: "/usr/include/x86_64-linux-gnu/c++/5.4.0"
-  # cxx_builtin_include_directory: "/usr/include/c++/5.4.0/backward"
-  # cxx_builtin_include_directory: "/usr/lib/gcc/x86_64-linux-gnu/5.4.0/include"
-  # cxx_builtin_include_directory: "/usr/lib/gcc/x86_64-linux-gnu/5.4.0/include-fixed"
-  # cxx_builtin_include_directory: "/usr/include/x86_64-linux-gnu"
   cxx_flag: "-std=c++0x"
   host_system_name: "local"
   linker_flag: "-lstdc++"
   linker_flag: "-lm"
   linker_flag: "-Wl,-no-as-needed"
-  linker_flag: "-B/usr/bin"
-  linker_flag: "-B/usr/bin"
   linker_flag: "-pass-exit-codes"
   needsPic: true
   objcopy_embed_flag: "-I"
   objcopy_embed_flag: "binary"
   supports_fission: false
-  supports_gold_linker: false
   supports_incremental_linker: false
   supports_interface_shared_objects: false
   supports_normalizing_ar: false
