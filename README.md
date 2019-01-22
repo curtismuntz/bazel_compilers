@@ -25,7 +25,7 @@ In your `.bazelrc` file:
 ```
 build --compiler=compiler
 
-build:rpi --crosstool_top=//compilers/arm_compiler:toolchain
+build:rpi --crosstool_top=@murtis_bazel_compilers//compilers/arm_compiler:toolchain
 build:rpi --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:rpi --cpu=armeabi-v7a --compiler=gcc
 build:rpi --spawn_strategy=standalone
