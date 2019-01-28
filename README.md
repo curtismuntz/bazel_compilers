@@ -10,9 +10,9 @@ In your `WORKSPACE` file:
 http_archive(
     name = "murtis_bazel_compilers",
     urls = [
-      "https://gitlab.com/murtis/bazel_compilers/-/archive/master/bazel_compilers-master.tar.gz",
+      "https://gitlab.com/murtis/bazel_compilers/-/archive/< commit hash >/bazel_compilers-< commit hash >.tar.gz",
     ],
-    strip_prefix = "bazel_compilers-master",
+    strip_prefix = "bazel_compilers-< commit hash >",
 )
 
 load("@murtis_bazel_compilers//compilers:dependencies.bzl", "cross_compiler_dependencies")
