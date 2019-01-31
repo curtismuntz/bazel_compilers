@@ -25,13 +25,13 @@ In your `.bazelrc` file:
 ```
 build --compiler=compiler
 
-build:rpi --crosstool_top=@murtis_bazel_compilers//compilers/arm_compiler:toolchain
-build:rpi --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
-build:rpi --cpu=armeabi-v7a --compiler=gcc
-build:rpi --spawn_strategy=standalone
+build:armv7hf --crosstool_top=@murtis_bazel_compilers//compilers/arm_compiler:toolchain
+build:armv7hf --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:armv7hf --cpu=armeabi-v7a --compiler=gcc
+build:armv7hf --spawn_strategy=standalone
 ```
 
 
 Build with:
 
-`bazel build --config=rpi //example` or `bazel build //example`
+`bazel build --config=armv7hf //example` or `bazel build //example`

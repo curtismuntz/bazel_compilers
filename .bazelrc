@@ -1,7 +1,7 @@
 build --verbose_failures
 build --compiler=compiler
 
-build:rpi --crosstool_top=//compilers/arm_compiler:toolchain
-build:rpi --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
-build:rpi --cpu=armeabi-v7a --compiler=gcc
-build:rpi --spawn_strategy=standalone
+build:armv7hf --crosstool_top=//compilers/arm_compiler:toolchain
+build:armv7hf --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
+build:armv7hf --cpu=armeabi-v7a --compiler=gcc
+build:armv7hf --spawn_strategy=standalone
