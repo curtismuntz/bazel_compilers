@@ -2,6 +2,8 @@
 
 This repo hosts the bazel compiler defintions for my many cpp projects.
 
+Requires bazel version >= 0.23.0.
+
 # usage
 
 In your `WORKSPACE` file:
