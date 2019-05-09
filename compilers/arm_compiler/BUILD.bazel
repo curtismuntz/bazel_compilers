@@ -2,18 +2,28 @@
 # by lopping off the name of --crosstool_top and searching for
 # 'cc-compiler-${CPU}' in this BUILD file, where CPU is the target CPU
 # specified in --cpu.
-#
+
+load(":cc_toolchain_config.bzl", "cc_toolchain_config")
+
 # This file group should include
 #   * all cc_toolchain targets supported
 #   * all file groups that said cc_toolchain might refer to
 filegroup(
     name = "toolchain_fg",
     srcs = [
-        ":cc-compiler-k8",
         ":cc-compiler-armeabi-v7a",
-        ":linaro_linux_all_files_armv7",
+        ":cc-compiler-k8",
+        ":linaro_linux_linker_files_armv7",
         "@org_linaro_components_toolchain_gcc_armv7//:compiler_components",
     ],
+)
+
+filegroup(
+    name = "srcs",
+    srcs = glob(["**"]) + [
+        "//compilers/arm_compiler/linaro_linux_gcc_armv7:srcs",
+    ],
+    visibility = ["//visibility:private"],
 )
 
 cc_toolchain_suite(
@@ -60,13 +70,17 @@ filegroup(
     srcs = [],
 )
 
+cc_toolchain_config(name = "armeabi-v7a_config", cpu = "armeabi-v7a")
+
 cc_toolchain(
     name = "cc-compiler-armeabi-v7a",
+    toolchain_identifier = "armeabi-v7a",
+    toolchain_config = ":armeabi-v7a_config",
     all_files = ":linaro_linux_all_files_armv7",
+    ar_files = "//compilers/arm_compiler/linaro_linux_gcc_armv7:ar",
+    as_files = "//compilers/arm_compiler/linaro_linux_gcc_armv7:as",
     compiler_files = ":linaro_linux_compiler_files_armv7",
     dwp_files = ":empty",
-    # dynamic_runtime_libs = [":empty"],
-    # static_runtime_libs = [":empty"],
     linker_files = ":linaro_linux_linker_files_armv7",
     objcopy_files = "//compilers/arm_compiler/linaro_linux_gcc_armv7:objcopy",
     strip_files = "//compilers/arm_compiler/linaro_linux_gcc_armv7:strip",
@@ -74,16 +88,19 @@ cc_toolchain(
     visibility = ["//visibility:public"],
 )
 
+cc_toolchain_config(name = "local_config", cpu = "k8")
+
 cc_toolchain(
     name = "cc-compiler-k8",
+    toolchain_identifier = "local",
+    toolchain_config = ":local_config",
     all_files = ":empty",
+    ar_files = ":empty",
+    as_files = ":empty",
     compiler_files = ":empty",
     dwp_files = ":empty",
-    # dynamic_runtime_libs = [":empty"],
     linker_files = ":empty",
     objcopy_files = ":empty",
-    # static_runtime_libs = [":empty"],
     strip_files = ":empty",
     supports_param_files = 1,
-    visibility = ["//visibility:public"],
 )
