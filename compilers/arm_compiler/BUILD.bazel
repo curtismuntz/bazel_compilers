@@ -9,19 +9,11 @@
 filegroup(
     name = "toolchain_fg",
     srcs = [
-        ":cc-compiler-armeabi-v7a",
         ":cc-compiler-k8",
-        ":linaro_linux_all_files",
+        ":cc-compiler-armeabi-v7a",
+        ":linaro_linux_all_files_armv7",
         "@org_linaro_components_toolchain_gcc_armv7//:compiler_components",
     ],
-)
-
-filegroup(
-    name = "srcs",
-    srcs = glob(["**"]) + [
-        "//compilers/arm_compiler/linaro_linux_gcc_armv7:srcs",
-    ],
-    visibility = ["//visibility:private"],
 )
 
 cc_toolchain_suite(
@@ -37,7 +29,7 @@ cc_toolchain_suite(
 )
 
 filegroup(
-    name = "linaro_linux_all_files",
+    name = "linaro_linux_all_files_armv7",
     srcs = [
         "//compilers/arm_compiler/linaro_linux_gcc_armv7:tool-wrappers",
         "@org_linaro_components_toolchain_gcc_armv7//:compiler_pieces",
@@ -45,7 +37,7 @@ filegroup(
 )
 
 filegroup(
-    name = "linaro_linux_linker_files",
+    name = "linaro_linux_linker_files_armv7",
     srcs = [
         "//compilers/arm_compiler/linaro_linux_gcc_armv7:ar",
         "//compilers/arm_compiler/linaro_linux_gcc_armv7:gcc",
@@ -55,7 +47,7 @@ filegroup(
 )
 
 filegroup(
-    name = "linaro_linux_compiler_files",
+    name = "linaro_linux_compiler_files_armv7",
     srcs = [
         "//compilers/arm_compiler/linaro_linux_gcc_armv7:as",
         "//compilers/arm_compiler/linaro_linux_gcc_armv7:gcc",
@@ -70,12 +62,12 @@ filegroup(
 
 cc_toolchain(
     name = "cc-compiler-armeabi-v7a",
-    all_files = ":linaro_linux_all_files",
-    compiler_files = ":linaro_linux_compiler_files",
+    all_files = ":linaro_linux_all_files_armv7",
+    compiler_files = ":linaro_linux_compiler_files_armv7",
     dwp_files = ":empty",
     # dynamic_runtime_libs = [":empty"],
     # static_runtime_libs = [":empty"],
-    linker_files = ":linaro_linux_linker_files",
+    linker_files = ":linaro_linux_linker_files_armv7",
     objcopy_files = "//compilers/arm_compiler/linaro_linux_gcc_armv7:objcopy",
     strip_files = "//compilers/arm_compiler/linaro_linux_gcc_armv7:strip",
     supports_param_files = 1,
