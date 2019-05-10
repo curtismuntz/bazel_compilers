@@ -1,0 +1,84 @@
+package(default_visibility = ["//compilers/arm_compiler:__pkg__"])
+
+filegroup(
+    name = "srcs",
+    srcs = glob(["**"]),
+)
+
+filegroup(
+    name = "gcc",
+    srcs = [
+        "aarch64-linux-gnu-gcc",
+        "@org_linaro_components_toolchain_gcc_aarch64//:gcc",
+    ],
+)
+
+filegroup(
+    name = "ar",
+    srcs = [
+        "aarch64-linux-gnu-ar",
+        "@org_linaro_components_toolchain_gcc_aarch64//:ar",
+    ],
+)
+
+filegroup(
+    name = "ld",
+    srcs = [
+        "aarch64-linux-gnu-ld",
+        "@org_linaro_components_toolchain_gcc_aarch64//:ld",
+    ],
+)
+
+filegroup(
+    name = "nm",
+    srcs = [
+        "aarch64-linux-gnu-nm",
+        "@org_linaro_components_toolchain_gcc_aarch64//:nm",
+    ],
+)
+
+filegroup(
+    name = "objcopy",
+    srcs = [
+        "aarch64-linux-gnu-objcopy",
+        "@org_linaro_components_toolchain_gcc_aarch64//:objcopy",
+    ],
+)
+
+filegroup(
+    name = "objdump",
+    srcs = [
+        "aarch64-linux-gnu-objdump",
+        "@org_linaro_components_toolchain_gcc_aarch64//:objdump",
+    ],
+)
+
+filegroup(
+    name = "strip",
+    srcs = [
+        "aarch64-linux-gnu-strip",
+        "@org_linaro_components_toolchain_gcc_aarch64//:strip",
+    ],
+)
+
+filegroup(
+    name = "as",
+    srcs = [
+        "aarch64-linux-gnu-as",
+        "@org_linaro_components_toolchain_gcc_aarch64//:as",
+    ],
+)
+
+filegroup(
+    name = "tool-wrappers",
+    srcs = [
+        ":ar",
+        ":as",
+        ":gcc",
+        ":ld",
+        ":nm",
+        ":objcopy",
+        ":objdump",
+        ":strip",
+    ],
+)

@@ -33,6 +33,8 @@ load("@bazel_tools//tools/build_defs/cc:action_names.bzl", "ACTION_NAMES")
 def _impl(ctx):
     if (ctx.attr.cpu == "armeabi-v7a"):
         toolchain_identifier = "armeabi-v7a"
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+        toolchain_identifier = "aarch64-linux-gnu"
     elif (ctx.attr.cpu == "k8"):
         toolchain_identifier = "local"
     else:
@@ -40,12 +42,16 @@ def _impl(ctx):
 
     if (ctx.attr.cpu == "armeabi-v7a"):
         host_system_name = "armeabi-v7a"
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+        host_system_name = "aarch64-linux-gnu"
     elif (ctx.attr.cpu == "k8"):
         host_system_name = "local"
     else:
         fail("Unreachable")
 
     if (ctx.attr.cpu == "armeabi-v7a"):
+        target_system_name = "arm_a15"
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
         target_system_name = "arm_a15"
     elif (ctx.attr.cpu == "k8"):
         target_system_name = "local"
@@ -54,12 +60,16 @@ def _impl(ctx):
 
     if (ctx.attr.cpu == "armeabi-v7a"):
         target_cpu = "armeabi-v7a"
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+        target_cpu = "aarch64-linux-gnu"
     elif (ctx.attr.cpu == "k8"):
         target_cpu = "k8"
     else:
         fail("Unreachable")
 
     if (ctx.attr.cpu == "armeabi-v7a"):
+        target_libc = "glibc_2.19"
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
         target_libc = "glibc_2.19"
     elif (ctx.attr.cpu == "k8"):
         target_libc = "local"
@@ -70,10 +80,14 @@ def _impl(ctx):
         compiler = "compiler"
     elif (ctx.attr.cpu == "armeabi-v7a"):
         compiler = "gcc"
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+        compiler = "gcc"
     else:
         fail("Unreachable")
 
     if (ctx.attr.cpu == "armeabi-v7a"):
+        abi_version = "gcc"
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
         abi_version = "gcc"
     elif (ctx.attr.cpu == "k8"):
         abi_version = "local"
@@ -81,6 +95,8 @@ def _impl(ctx):
         fail("Unreachable")
 
     if (ctx.attr.cpu == "armeabi-v7a"):
+        abi_libc_version = "glibc_2.19"
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
         abi_libc_version = "glibc_2.19"
     elif (ctx.attr.cpu == "k8"):
         abi_libc_version = "local"
@@ -105,6 +121,14 @@ def _impl(ctx):
                 tool(path = "linaro_linux_gcc_armv7/arm-linux-gnueabihf-objcopy"),
             ],
         )
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+          objcopy_embed_data_action = action_config(
+              action_name = "objcopy_embed_data",
+              enabled = True,
+              tools = [
+                  tool(path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-objcopy"),
+              ],
+          )
     elif (ctx.attr.cpu == "k8"):
         objcopy_embed_data_action = action_config(
             action_name = "objcopy_embed_data",
@@ -149,6 +173,38 @@ def _impl(ctx):
             ],
         )
     elif (ctx.attr.cpu == "armeabi-v7a"):
+        unfiltered_compile_flags_feature = feature(
+            name = "unfiltered_compile_flags",
+            enabled = True,
+            flag_sets = [
+                flag_set(
+                    actions = [
+                        ACTION_NAMES.assemble,
+                        ACTION_NAMES.preprocess_assemble,
+                        ACTION_NAMES.linkstamp_compile,
+                        ACTION_NAMES.c_compile,
+                        ACTION_NAMES.cpp_compile,
+                        ACTION_NAMES.cpp_header_parsing,
+                        ACTION_NAMES.cpp_module_compile,
+                        ACTION_NAMES.cpp_module_codegen,
+                        ACTION_NAMES.lto_backend,
+                        ACTION_NAMES.clif_match,
+                    ],
+                    flag_groups = [
+                        flag_group(
+                            flags = [
+                                "-no-canonical-prefixes",
+                                "-Wno-builtin-macro-redefined",
+                                "-D__DATE__=\"redacted\"",
+                                "-D__TIMESTAMP__=\"redacted\"",
+                                "-D__TIME__=\"redacted\"",
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        )
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
         unfiltered_compile_flags_feature = feature(
             name = "unfiltered_compile_flags",
             enabled = True,
@@ -387,6 +443,120 @@ def _impl(ctx):
                 ),
             ],
         )
+
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+        default_compile_flags_feature = feature(
+            name = "default_compile_flags",
+            enabled = True,
+            flag_sets = [
+                flag_set(
+                    actions = [
+                        ACTION_NAMES.assemble,
+                        ACTION_NAMES.preprocess_assemble,
+                        ACTION_NAMES.linkstamp_compile,
+                        ACTION_NAMES.c_compile,
+                        ACTION_NAMES.cpp_compile,
+                        ACTION_NAMES.cpp_header_parsing,
+                        ACTION_NAMES.cpp_module_compile,
+                        ACTION_NAMES.cpp_module_codegen,
+                        ACTION_NAMES.lto_backend,
+                        ACTION_NAMES.clif_match,
+                    ],
+                    flag_groups = [
+                        flag_group(
+                            flags = [
+                                "--sysroot=external/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/libc",
+                                # "-mfloat-abi=hard",
+                                "-nostdinc",
+                                "-isystem",
+                                "external/org_linaro_components_toolchain_gcc_aarch64/lib/gcc/aarch64-linux-gnu/7.3.1/include",
+                                "-isystem",
+                                "external/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/libc/usr/include",
+                                "-isystem",
+                                "external/org_linaro_components_toolchain_gcc_aarch64/lib/gcc/aarch64-linux-gnu/7.3.1/include-fixed",
+                                "-isystem",
+                                "external/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/libc/usr/include",
+                                "-U_FORTIFY_SOURCE",
+                                "-fstack-protector",
+                                "-fPIE",
+                                "-fdiagnostics-color=always",
+                                "-Wall",
+                                "-Wunused-but-set-parameter",
+                                "-Wno-free-nonheap-object",
+                                "-fno-omit-frame-pointer",
+                            ],
+                        ),
+                    ],
+                ),
+                flag_set(
+                    actions = [
+                        ACTION_NAMES.assemble,
+                        ACTION_NAMES.preprocess_assemble,
+                        ACTION_NAMES.linkstamp_compile,
+                        ACTION_NAMES.c_compile,
+                        ACTION_NAMES.cpp_compile,
+                        ACTION_NAMES.cpp_header_parsing,
+                        ACTION_NAMES.cpp_module_compile,
+                        ACTION_NAMES.cpp_module_codegen,
+                        ACTION_NAMES.lto_backend,
+                        ACTION_NAMES.clif_match,
+                    ],
+                    flag_groups = [flag_group(flags = ["-g"])],
+                    with_features = [with_feature_set(features = ["dbg"])],
+                ),
+                flag_set(
+                    actions = [
+                        ACTION_NAMES.assemble,
+                        ACTION_NAMES.preprocess_assemble,
+                        ACTION_NAMES.linkstamp_compile,
+                        ACTION_NAMES.c_compile,
+                        ACTION_NAMES.cpp_compile,
+                        ACTION_NAMES.cpp_header_parsing,
+                        ACTION_NAMES.cpp_module_compile,
+                        ACTION_NAMES.cpp_module_codegen,
+                        ACTION_NAMES.lto_backend,
+                        ACTION_NAMES.clif_match,
+                    ],
+                    flag_groups = [
+                        flag_group(
+                            flags = [
+                                "-g0",
+                                "-O2",
+                                "-DNDEBUG",
+                                "-ffunction-sections",
+                                "-fdata-sections",
+                            ],
+                        ),
+                    ],
+                    with_features = [with_feature_set(features = ["opt"])],
+                ),
+                flag_set(
+                    actions = [
+                        ACTION_NAMES.linkstamp_compile,
+                        ACTION_NAMES.cpp_compile,
+                        ACTION_NAMES.cpp_header_parsing,
+                        ACTION_NAMES.cpp_module_compile,
+                        ACTION_NAMES.cpp_module_codegen,
+                        ACTION_NAMES.lto_backend,
+                        ACTION_NAMES.clif_match,
+                    ],
+                    flag_groups = [
+                        flag_group(
+                            flags = [
+                                "-isystem",
+                                "external/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/include/c++/7.3.1/aarch64-linux-gnu",
+                                "-isystem",
+                                "external/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/include/c++/7.3.1",
+                                "-isystem",
+                                "external/org_linaro_components_toolchain_gcc_aarch64/include/c++/7.3.1/aarch64-linux-gnu",
+                                "-isystem",
+                                "external/org_linaro_components_toolchain_gcc_aarch64/include/c++/7.3.1",
+                            ],
+                        ),
+                    ],
+                ),
+            ],
+        )
     else:
         default_compile_flags_feature = None
 
@@ -486,6 +656,41 @@ def _impl(ctx):
                 ),
             ],
         )
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+        default_link_flags_feature = feature(
+            name = "default_link_flags",
+            enabled = True,
+            flag_sets = [
+                flag_set(
+                    actions = all_link_actions,
+                    flag_groups = [
+                        flag_group(
+                            flags = [
+                                "--sysroot=external/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/libc",
+                                "-lstdc++",
+                                "-latomic",
+                                "-lm",
+                                "-lpthread",
+                                "-Ltools/arm_compiler/linaro_linux_gcc_aarch64/clang_more_libs",
+                                "-Lexternal/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/lib",
+                                "-Lexternal/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/libc/lib",
+                                "-Lexternal/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/libc/usr/lib",
+                                "-Bexternal/org_linaro_components_toolchain_gcc_aarch64/aarch64-linux-gnu/bin",
+                                "-Wl,--dynamic-linker=/lib/ld-linux-armhf.so.3",
+                                "-no-canonical-prefixes",
+                                "-pie",
+                                "-Wl,-z,relro,-z,now",
+                            ],
+                        ),
+                    ],
+                ),
+                flag_set(
+                    actions = all_link_actions,
+                    flag_groups = [flag_group(flags = ["-Wl,--gc-sections"])],
+                    with_features = [with_feature_set(features = ["opt"])],
+                ),
+            ],
+        )
     elif (ctx.attr.cpu == "k8"):
         default_link_flags_feature = feature(
             name = "default_link_flags",
@@ -552,6 +757,18 @@ def _impl(ctx):
             sysroot_feature,
             unfiltered_compile_flags_feature,
         ]
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+        features = [
+            default_compile_flags_feature,
+            default_link_flags_feature,
+            supports_pic_feature,
+            objcopy_embed_flags_feature,
+            opt_feature,
+            dbg_feature,
+            user_compile_flags_feature,
+            sysroot_feature,
+            unfiltered_compile_flags_feature,
+        ]
     else:
         fail("Unreachable")
 
@@ -567,6 +784,19 @@ def _impl(ctx):
             "%package(@org_linaro_components_toolchain_gcc_armv7//lib/gcc/arm-linux-gnueabihf/5.3.1/include)%",
             "%package(@org_linaro_components_toolchain_gcc_armv7//lib/gcc/arm-linux-gnueabihf/5.3.1/include-fixed)%",
             "%package(@org_linaro_components_toolchain_gcc_armv7//arm-linux-gnueabihf/include)%/c++/5.3.1",
+        ]
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+        cxx_builtin_include_directories = [
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//include)%",
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//aarch64-linux-gnu/libc/usr/include)%",
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//aarch64-linux-gnu/libc/usr/lib/include)%",
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//aarch64-linux-gnu/libc/lib/gcc/aarch64-linux-gnu/7.3.1/include-fixed)%",
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//include)%/c++/7.3.1",
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//aarch64-linux-gnu/libc/lib/gcc/aarch64-linux-gnu/7.3.1/include)%",
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//aarch64-linux-gnu/libc/lib/gcc/aarch64-linux-gnu/7.3.1/include-fixed)%",
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//lib/gcc/aarch64-linux-gnu/7.3.1/include)%",
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//lib/gcc/aarch64-linux-gnu/7.3.1/include-fixed)%",
+            "%package(@org_linaro_components_toolchain_gcc_aarch64//aarch64-linux-gnu/include)%/c++/7.3.1",
         ]
     elif (ctx.attr.cpu == "k8"):
         cxx_builtin_include_directories = [
@@ -633,6 +863,53 @@ def _impl(ctx):
                 path = "linaro_linux_gcc_armv7/arm-linux-gnueabihf-strip",
             ),
         ]
+    elif (ctx.attr.cpu == "aarch64-linux-gnu"):
+        tool_paths = [
+            tool_path(
+                name = "ar",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-ar",
+            ),
+            tool_path(
+                name = "compat-ld",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-ld",
+            ),
+            tool_path(
+                name = "cpp",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-gcc",
+            ),
+            tool_path(
+                name = "dwp",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-dwp",
+            ),
+            tool_path(
+                name = "gcc",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-gcc",
+            ),
+            tool_path(
+                name = "gcov",
+                path = "arm-frc-linux-gnueabi/arm-frc-linux-gnueabi-gcov-4.9",
+            ),
+            tool_path(
+                name = "ld",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-ld",
+            ),
+            tool_path(
+                name = "nm",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-nm",
+            ),
+            tool_path(
+                name = "objcopy",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-objcopy",
+            ),
+            tool_path(
+                name = "objdump",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-objdump",
+            ),
+            tool_path(
+                name = "strip",
+                path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-strip",
+            ),
+        ]
     elif (ctx.attr.cpu == "k8"):
         tool_paths = [
             tool_path(name = "ar", path = "/usr/bin/ar"),
@@ -679,7 +956,7 @@ def _impl(ctx):
 cc_toolchain_config = rule(
     implementation = _impl,
     attrs = {
-        "cpu": attr.string(mandatory = True, values = ["armeabi-v7a", "k8"]),
+        "cpu": attr.string(mandatory = True, values = ["armeabi-v7a", "aarch64-linux-gnu", "k8"]),
     },
     provides = [CcToolchainConfigInfo],
     executable = True,

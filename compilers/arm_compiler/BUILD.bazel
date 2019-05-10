@@ -12,6 +12,7 @@ filegroup(
     name = "toolchain_fg",
     srcs = [
         ":cc-compiler-armeabi-v7a",
+        ":cc-compiler-aarch64-linux-gnu",
         ":cc-compiler-k8",
         ":linaro_linux_linker_files_armv7",
         "@org_linaro_components_toolchain_gcc_armv7//:compiler_components",
@@ -30,9 +31,9 @@ cc_toolchain_suite(
     name = "toolchain",
     # target_cpu | compiler
     toolchains = {
-        "armeabi-v7a": "cc-compiler-armeabi-v7a",
         "k8": "cc-compiler-k8",
         "armeabi-v7a|gcc": "cc-compiler-armeabi-v7a",
+        "aarch64-linux-gnu|gcc": "cc-compiler-aarch64-linux-gnu",
         "k8|compiler": "cc-compiler-k8",
     },
     visibility = ["//visibility:public"],
@@ -66,6 +67,33 @@ filegroup(
 )
 
 filegroup(
+    name = "linaro_linux_all_files_aarch64",
+    srcs = [
+        "//compilers/arm_compiler/linaro_linux_gcc_aarch64:tool-wrappers",
+        "@org_linaro_components_toolchain_gcc_aarch64//:compiler_pieces",
+    ],
+)
+
+filegroup(
+    name = "linaro_linux_linker_files_aarch64",
+    srcs = [
+        "//compilers/arm_compiler/linaro_linux_gcc_aarch64:ar",
+        "//compilers/arm_compiler/linaro_linux_gcc_aarch64:gcc",
+        "//compilers/arm_compiler/linaro_linux_gcc_aarch64:ld",
+        "@org_linaro_components_toolchain_gcc_aarch64//:compiler_pieces",
+    ],
+)
+
+filegroup(
+    name = "linaro_linux_compiler_files_aarch64",
+    srcs = [
+        "//compilers/arm_compiler/linaro_linux_gcc_aarch64:as",
+        "//compilers/arm_compiler/linaro_linux_gcc_aarch64:gcc",
+        "//compilers/arm_compiler/linaro_linux_gcc_aarch64:ld",
+    ],
+)
+
+filegroup(
     name = "empty",
     srcs = [],
 )
@@ -84,6 +112,24 @@ cc_toolchain(
     linker_files = ":linaro_linux_linker_files_armv7",
     objcopy_files = "//compilers/arm_compiler/linaro_linux_gcc_armv7:objcopy",
     strip_files = "//compilers/arm_compiler/linaro_linux_gcc_armv7:strip",
+    supports_param_files = 1,
+    visibility = ["//visibility:public"],
+)
+
+cc_toolchain_config(name = "aarch64-linux-gnu_config", cpu = "aarch64-linux-gnu")
+
+cc_toolchain(
+    name = "cc-compiler-aarch64-linux-gnu",
+    toolchain_identifier = "aarch64-linux-gnu",
+    toolchain_config = ":aarch64-linux-gnu_config",
+    all_files = ":linaro_linux_all_files_aarch64",
+    ar_files = "//compilers/arm_compiler/linaro_linux_gcc_aarch64:ar",
+    as_files = "//compilers/arm_compiler/linaro_linux_gcc_aarch64:as",
+    compiler_files = ":linaro_linux_compiler_files_aarch64",
+    dwp_files = ":empty",
+    linker_files = ":linaro_linux_linker_files_aarch64",
+    objcopy_files = "//compilers/arm_compiler/linaro_linux_gcc_aarch64:objcopy",
+    strip_files = "//compilers/arm_compiler/linaro_linux_gcc_aarch64:strip",
     supports_param_files = 1,
     visibility = ["//visibility:public"],
 )
