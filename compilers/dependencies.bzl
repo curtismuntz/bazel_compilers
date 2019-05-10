@@ -98,9 +98,12 @@ filegroup(
         )
 
     aarch64_name = "org_linaro_components_toolchain_gcc_aarch64"
-    aarch64_sha266 = "73eed74e593e2267504efbcf3678918bb22409ab7afa3dc7c135d2c6790c2345"
-    aarch64_prefix = "gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu"
-    aarch64_url = "https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz"
+    # aarch64_sha266 = "73eed74e593e2267504efbcf3678918bb22409ab7afa3dc7c135d2c6790c2345"
+    # aarch64_prefix = "gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu"
+    # aarch64_url = "https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz"
+    aarch64_sha266 = "1941dcf6229d6706bcb89b7976d5d43d170efdd17c27d5fe1738e7ecf22adc37"
+    aarch64_prefix = "gcc-linaro-5.3.1-2016.05-x86_64_aarch64-linux-gnu"
+    aarch64_url = "https://releases.linaro.org/components/toolchain/binaries/5.3-2016.05/aarch64-linux-gnu/gcc-linaro-5.3.1-2016.05-x86_64_aarch64-linux-gnu.tar.xz"
 
     if aarch64_name not in native.existing_rules():
         http_archive(
