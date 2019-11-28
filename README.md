@@ -1,3 +1,5 @@
+[![Actions Status](https://github.com/curtismuntz/bazel_compilers/workflows/ci/badge.svg)](https://github.com/curtismuntz/bazel_compilers/actions)
+
 # bazel_compilers
 
 This repo hosts the bazel compiler defintions for my many cpp projects. I'm not a compiler expert, so use with caution. I'm trying to maintain a Raspberry Pi / Nvidia Jetson suite of compiler definitions in one repository, effectively mirroring the bazel crosstool [here](https://github.com/bazelbuild/bazel/tree/master/src/test/shell/bazel/testdata/bazel_toolchain_test_data)
