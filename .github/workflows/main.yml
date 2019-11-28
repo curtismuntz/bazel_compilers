@@ -1,18 +1,32 @@
 on: push
 name: ci
 jobs:
-  checks:
-    name: run
+  local_build:
+    name: build and test
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
+      - uses: actions/checkout@master
 
-    - name: build
-      uses: ngalaiko/bazel-action/1.2.1@master
-      with:
-        args: build //...
+      - name: build
+        uses: ngalaiko/bazel-action/1.2.1@master
+        with:
+          args: build //...
 
-    - name: test
-      uses: ngalaiko/bazel-action/1.2.1@master
-      with:
-        args: test //...
+      - name: test
+        uses: ngalaiko/bazel-action/1.2.1@master
+        with:
+          args: test //...
+
+  cross_builds:
+    name: cross compile build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        architecture: ["aarch64", "armv7hf"]
+    steps:
+      - uses: actions/checkout@master
+
+      - name: cross compile
+        uses: ngalaiko/bazel-action/1.2.1@master
+        with:
+          args: build //... --config=${{ matrix.architecture }}
