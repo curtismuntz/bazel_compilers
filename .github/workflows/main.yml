@@ -8,12 +8,12 @@ jobs:
       - uses: actions/checkout@master
 
       - name: build
-        uses: curtismuntz/bazel-action/bazelisk_1.1.0@master
+        uses: curtismuntz/bazel-action/bazelisk_1.1.0@bazelisk_1.1.0
         with:
           args: build //...
 
       - name: test
-        uses: curtismuntz/bazel-action/bazelisk_1.1.0@master
+        uses: curtismuntz/bazel-action/bazelisk_1.1.0@bazelisk_1.1.0
         with:
           args: test //...
 
@@ -27,6 +27,6 @@ jobs:
       - uses: actions/checkout@master
 
       - name: cross compile
-        uses: curtismuntz/bazel-action/bazelisk_1.1.0@master
+        uses: curtismuntz/bazel-action/bazelisk_1.1.0@bazelisk_1.1.0
         with:
           args: build //... --config=${{ matrix.architecture }}
