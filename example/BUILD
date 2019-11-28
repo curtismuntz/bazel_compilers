@@ -9,3 +9,9 @@ cc_binary(
     srcs = ["main.cpp"],
     deps = [":example_lib"],
 )
+
+cc_test(
+    name = "example_test",
+    srcs = ["example_test.cpp"],
+    deps = [":example_lib"],
+)
