@@ -2,9 +2,9 @@ load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 def cross_compiler_dependencies(**kwargs):
     armv7_name = "org_linaro_components_toolchain_gcc_armv7"
-    armv7_sha256 = "7248bf105d0d468887a9b8a7120bb281ac8ad0223d9cb3d00dc7c2d498485d91"
-    armv7_prefix = "gcc-linaro-7.3.1-2018.05-x86_64_arm-linux-gnueabihf"
-    armv7_url = "https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/arm-linux-gnueabihf/gcc-linaro-7.3.1-2018.05-x86_64_arm-linux-gnueabihf.tar.xz"
+    armv7_sha256 = "3c951cf1941d0fa06d64cc0d5e88612b209d8123b273fa26c16d70bd7bc6b163"
+    armv7_prefix = "gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf"
+    armv7_url = "https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/arm-linux-gnueabihf/gcc-linaro-7.4.1-2019.02-x86_64_arm-linux-gnueabihf.tar.xz"
 
     if armv7_name not in native.existing_rules():
         http_archive(
@@ -98,9 +98,9 @@ filegroup(
         )
 
     aarch64_name = "org_linaro_components_toolchain_gcc_aarch64"
-    aarch64_sha266 = "73eed74e593e2267504efbcf3678918bb22409ab7afa3dc7c135d2c6790c2345"
-    aarch64_prefix = "gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu"
-    aarch64_url = "https://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz"
+    aarch64_sha266 = "27f1dc2c491ed61ae8f0d4b0c11de59cd2f7dd9c94761ee7153006fcac1bf9ab"
+    aarch64_prefix = "gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu"
+    aarch64_url = "https://releases.linaro.org/components/toolchain/binaries/7.4-2019.02/aarch64-linux-gnu/gcc-linaro-7.4.1-2019.02-x86_64_aarch64-linux-gnu.tar.xz"
 
     if aarch64_name not in native.existing_rules():
         http_archive(
