@@ -7,7 +7,10 @@ cc_library(
 cc_binary(
     name = "example",
     srcs = ["main.cpp"],
-    deps = [":example_lib"],
+    deps = [
+      ":example_lib",
+      "@boost//:thread",
+    ],
 )
 
 cc_test(
