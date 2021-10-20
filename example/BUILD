@@ -5,6 +5,12 @@ cc_library(
 )
 
 cc_binary(
+    name = "example_lib.so",
+    linkshared = True,
+    deps = [":example_lib"],
+)
+
+cc_binary(
     name = "example",
     srcs = ["main.cpp"],
     deps = [":example_lib"],
