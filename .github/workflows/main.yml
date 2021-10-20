@@ -1,5 +1,15 @@
-on: [pull_request, push]
 name: ci
+
+on:
+  # Trigger when a push is made to master.
+  push:
+    branches:
+      - master
+  # Trigger when a pull request is made against master.
+  pull_request:
+    branches:
+      - master
+
 jobs:
   local_build:
     name: "x86 build and test"
