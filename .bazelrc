@@ -2,6 +2,8 @@ build --verbose_failures
 build --compiler=compiler
 build --cxxopt=--std=c++14
 
+build:amd64 --platforms=@local_config_platform//:host
+
 build:armv7hf --crosstool_top=//compilers/arm_compiler:toolchain
 build:armv7hf --host_crosstool_top=@bazel_tools//tools/cpp:toolchain
 build:armv7hf --cpu=armeabi-v7a --compiler=gcc
