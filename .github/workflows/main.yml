@@ -1,32 +1,29 @@
-on: [pull_request, push]
 name: ci
+
+on:
+  # Trigger when a push is made to master.
+  push:
+    branches:
+      - master
+  # Trigger when a pull request is made against master.
+  pull_request:
+    branches:
+      - master
+
 jobs:
   local_build:
     name: "x86 build and test"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
-
-      - name: build
-        uses: ngalaiko/bazel-action/1.2.1@master
-        with:
-          args: build //...
-
-      - name: test
-        uses: ngalaiko/bazel-action/1.2.1@master
-        with:
-          args: test //...
-
-  cross_builds:
-    name: cross compile build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
-        architecture: ["aarch64", "armv7hf"]
+        architecture: ["amd64", "aarch64", "armv7hf"]
+    # From https://github.com/marketplace/actions/setup-bazelisk
     steps:
-      - uses: actions/checkout@master
-
-      - name: cross compile
-        uses: ngalaiko/bazel-action/1.2.1@master
+      - uses: actions/checkout@v2
+      - uses: bazelbuild/setup-bazelisk@v1
+      - name: Mount bazel cache  # Optional
+        uses: actions/cache@v2
         with:
-          args: build //... --config=${{ matrix.architecture }}
+          path: "~/.cache/bazel"
+          key: bazel
+      - run: bazel build //... --config=${{ matrix.architecture }}
