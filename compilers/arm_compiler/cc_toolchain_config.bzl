@@ -122,13 +122,13 @@ def _impl(ctx):
             ],
         )
     elif (ctx.attr.cpu == "aarch64-linux-gnu"):
-          objcopy_embed_data_action = action_config(
-              action_name = "objcopy_embed_data",
-              enabled = True,
-              tools = [
-                  tool(path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-objcopy"),
-              ],
-          )
+        objcopy_embed_data_action = action_config(
+            action_name = "objcopy_embed_data",
+            enabled = True,
+            tools = [
+                tool(path = "linaro_linux_gcc_aarch64/aarch64-linux-gnu-objcopy"),
+            ],
+        )
     elif (ctx.attr.cpu == "k8"):
         objcopy_embed_data_action = action_config(
             action_name = "objcopy_embed_data",
@@ -594,6 +594,19 @@ def _impl(ctx):
         ],
     )
 
+    shared_flag_feature = feature(
+        name = "shared_flag",
+        flag_sets = [
+            flag_set(
+                actions = [
+                    ACTION_NAMES.cpp_link_dynamic_library,
+                    ACTION_NAMES.cpp_link_nodeps_dynamic_library,
+                ],
+                flag_groups = [flag_group(flags = ["-shared"])],
+            ),
+        ],
+    )
+
     sysroot_feature = feature(
         name = "sysroot",
         enabled = True,
@@ -741,6 +754,7 @@ def _impl(ctx):
             default_link_flags_feature,
             supports_dynamic_linker_feature,
             supports_pic_feature,
+            shared_flag_feature,
             objcopy_embed_flags_feature,
             opt_feature,
             dbg_feature,
@@ -752,6 +766,8 @@ def _impl(ctx):
         features = [
             default_compile_flags_feature,
             default_link_flags_feature,
+            supports_dynamic_linker_feature,
+            shared_flag_feature,
             supports_pic_feature,
             objcopy_embed_flags_feature,
             opt_feature,
@@ -764,7 +780,9 @@ def _impl(ctx):
         features = [
             default_compile_flags_feature,
             default_link_flags_feature,
+            supports_dynamic_linker_feature,
             supports_pic_feature,
+            shared_flag_feature,
             objcopy_embed_flags_feature,
             opt_feature,
             dbg_feature,
