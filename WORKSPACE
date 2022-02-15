@@ -38,3 +38,11 @@ container_pull(
     registry = "gcr.io",
     repository = "distroless/cc",
 )
+
+container_pull(
+  name = "distroless-cc-nonroot-amd64",
+  registry = "gcr.io",
+  repository = "distroless/cc",
+  # 'tag' is also supported, but digest is encouraged for reproducibility.
+  digest = "sha256:827ada4cda56d54b273444a8ffca05670361f4083bbd715c991f155127311ef7",
+)

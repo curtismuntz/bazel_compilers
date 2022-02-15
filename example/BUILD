@@ -46,7 +46,7 @@ pkg_tar(
 container_image(
   name = "cc_image",
   base = select( {
-    "//conditions:default": None,
+    "//conditions:default": "@distroless-cc-nonroot-amd64//image",
     ":aarch64-linux-gnu": "@distroless-cc-nonroot-arm64//image",
   }),
   architecture = "x86_64",
