@@ -20,7 +20,7 @@ jobs:
     # From https://github.com/marketplace/actions/setup-bazelisk
     steps:
       - uses: actions/checkout@v2
-      - uses: bazelbuild/setup-bazelisk@v1
+      - uses: bazelbuild/setup-bazelisk@v3
       - name: Mount bazel cache  # Optional
         uses: actions/cache@v2
         with:
